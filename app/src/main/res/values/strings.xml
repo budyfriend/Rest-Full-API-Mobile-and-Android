@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Rest Full API</string>
+    <string name="link_api">http://192.168.43.23/akademik/</string>
+</resources>
