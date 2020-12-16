@@ -33,6 +33,8 @@ public class dialogData extends DialogFragment {
     Spinner sp_semester;
     ProgressDialog progressDialog;
     Dialog dialog;
+    RequestData requestData;
+
 
     Context context;
     String pilih;
@@ -69,6 +71,7 @@ public class dialogData extends DialogFragment {
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(angka_semester));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
         sp_semester.setAdapter(arrayAdapter);
+        requestData = new RequestData(context,progressDialog,recyclerView);
 
         if (pilih.equalsIgnoreCase("update")) {
             tv_title.setText("Ubah Data ");
@@ -92,10 +95,10 @@ public class dialogData extends DialogFragment {
                 } else {
                     if (pilih.equalsIgnoreCase("add")) {
                         mahasiswa = new modelMahasiswa("", _nama, _jurusan, _semester);
-                        RequestData.pushData(context, progressDialog, mahasiswa, dialog, recyclerView);
+                        requestData.pushData(mahasiswa, dialog);
                     }else {
                         mahasiswa = new modelMahasiswa(mahasiswa.getId(), _nama, _jurusan, _semester);
-                        RequestData.putData(context, progressDialog, mahasiswa, dialog, recyclerView);
+                        requestData.putData(mahasiswa, dialog);
                     }
                 }
 

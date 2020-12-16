@@ -40,15 +40,31 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class RequestData {
+    Context context;
+    ProgressDialog progressDialog;
+    RecyclerView recyclerView;
+    String link_api;
+    AsyncHttpClient client = new AsyncHttpClient();
+    RequestParams params = new RequestParams();
 
-    public static void getData(Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
-        String link_api = context.getString(R.string.link_api);
-        ArrayList<modelMahasiswa> modelMahasiswa = new ArrayList<>();
+    public RequestData(Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+        this.context = context;
+        link_api = context.getString(R.string.link_api);
+        this.progressDialog = progressDialog;
+        this.recyclerView = recyclerView;
+    }
 
+    public void setLoading(){
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        AsyncHttpClient client = new AsyncHttpClient();
+    }
+
+
+    public  void getData() {
+        ArrayList<modelMahasiswa> modelMahasiswa = new ArrayList<>();
+        setLoading();
+        client = new AsyncHttpClient();
 
         client.get(link_api, new TextHttpResponseHandler() {
             @Override
@@ -80,13 +96,11 @@ public class RequestData {
         });
     }
 
-    public static void pushData(Context context, ProgressDialog progressDialog, modelMahasiswa mahasiswa, Dialog dialog, RecyclerView recyclerView) {
-        String link_api = context.getString(R.string.link_api);
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+    public  void pushData( modelMahasiswa mahasiswa, Dialog dialog) {
+        RequestData requestData = new RequestData(context,progressDialog,recyclerView);
+         client = new AsyncHttpClient();
+         params = new RequestParams();
+        setLoading();
 
         params.put("nama", mahasiswa.getNama());
         params.put("jurusan", mahasiswa.getJurusan());
@@ -99,7 +113,7 @@ public class RequestData {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                RequestData.getData(context, progressDialog, recyclerView);
+                requestData.getData();
                 Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 dialog.dismiss();
@@ -107,13 +121,11 @@ public class RequestData {
         });
     }
 
-    public static void putData(Context context, ProgressDialog progressDialog, modelMahasiswa mahasiswa, Dialog dialog, RecyclerView recyclerView) {
-        String link_api = context.getString(R.string.link_api);
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+    public  void putData(modelMahasiswa mahasiswa, Dialog dialog) {
+        RequestData requestData = new RequestData(context,progressDialog,recyclerView);
+         client = new AsyncHttpClient();
+         params = new RequestParams();
+        setLoading();
 
         params.put("id", Integer.parseInt(mahasiswa.getId()));
         params.put("nama", mahasiswa.getNama());
@@ -127,7 +139,7 @@ public class RequestData {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                RequestData.getData(context, progressDialog, recyclerView);
+                requestData.getData();
                 Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 dialog.dismiss();
@@ -135,13 +147,11 @@ public class RequestData {
         });
     }
 
-    public static void deleteData(Context context, ProgressDialog progressDialog, modelMahasiswa mahasiswa, RecyclerView recyclerView) {
-        String link_api = context.getString(R.string.link_api);
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
+    public  void deleteData( modelMahasiswa mahasiswa) {
+        RequestData requestData = new RequestData(context,progressDialog,recyclerView);
+         client = new AsyncHttpClient();
+         params = new RequestParams();
+        setLoading();
         params.put("id", Integer.parseInt(mahasiswa.getId()));
         StringEntity entity = null;
         try {
@@ -159,7 +169,7 @@ public class RequestData {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                RequestData.getData(context, progressDialog, recyclerView);
+                requestData.getData();
                 Toast.makeText(context, "response : " + responseString+ " status code : " + statusCode, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }

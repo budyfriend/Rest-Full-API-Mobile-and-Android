@@ -27,6 +27,7 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
     Context context;
     RecyclerView recyclerView;
     ProgressDialog progressDialog;
+    RequestData requestData;
 
     public adapterMahasiswa(ArrayList<modelMahasiswa> modelMahasiswaArrayList, Context context,RecyclerView recyclerView,ProgressDialog progressDialog) {
         this.modelMahasiswaArrayList = modelMahasiswaArrayList;
@@ -88,7 +89,8 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
                     alert.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            RequestData.deleteData(context, progressDialog, modelMahasiswa, recyclerView);
+                            requestData = new RequestData(context,progressDialog,recyclerView);
+                            requestData.deleteData(modelMahasiswa);
                         }
                     }).setMessage("Apa kamu yakin ingin menghapus data ini?")
                             .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
