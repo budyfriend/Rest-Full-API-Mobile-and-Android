@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.restfullapi.R;
+import com.example.restfullapi.activity.MainActivity;
 import com.example.restfullapi.adapter.adapterMahasiswa;
 import com.example.restfullapi.model.modelMahasiswa;
 import com.google.android.material.snackbar.Snackbar;
@@ -48,13 +50,12 @@ import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class RequestData {
     Context context;
-   public static  ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog;
     public static RecyclerView recyclerView;
     public static String link_api;
     public static AsyncHttpClient client = new AsyncHttpClient();
     public static RequestParams params = new RequestParams();
     public static RequestData requestData;
-    public static adapterMahasiswa adapterMahasiswa;
     public static ArrayList<modelMahasiswa> modelMahasiswa = new ArrayList<>();
     public static ItemTouchHelper itemTouchHelper;
 
@@ -73,12 +74,14 @@ public class RequestData {
         client.get(link_api, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
+                    adapterMahasiswa adapterMahasiswa;
+                    recyclerView.setAdapter(null);
                     JSONArray jsonArray = new JSONArray(responseString);
                     modelMahasiswa.clear();
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -103,7 +106,7 @@ public class RequestData {
         });
     }
 
-    public static void pushData(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+    public static void pushData(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog) {
 
         client = new AsyncHttpClient();
         params = new RequestParams();
@@ -117,15 +120,18 @@ public class RequestData {
         client.post(link_api, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Snackbar.make(recyclerView, "Save successfully", Snackbar.LENGTH_LONG).show();
+                Toast.makeText(context,"Save successfully",Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
+                context.startActivity(new Intent(context, MainActivity.class));
                 if (dialog != null) {
-                    getData(context,progressDialog,recyclerView);
+//                    getData(context,progressDialog,recyclerView);
                     dialog.dismiss();
                 }
 
@@ -133,8 +139,7 @@ public class RequestData {
         });
     }
 
-    public static void putData(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
-
+    public static void putData(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog) {
         client = new AsyncHttpClient();
         params = new RequestParams();
         link_api = context.getString(R.string.link_api);
@@ -147,20 +152,25 @@ public class RequestData {
         client.put(link_api, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                getData(context,progressDialog,recyclerView);
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                getData(context, progressDialog, recyclerView);
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Snackbar.make(recyclerView, "Update successfully", Snackbar.LENGTH_LONG).show();
+                Toast.makeText(context,"Update successfully",Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
-                dialog.dismiss();
+                context.startActivity(new Intent(context, MainActivity.class));
+                if (dialog != null){
+                    dialog.dismiss();
+                }
             }
         });
     }
 
-    public static void deleteData(int s,Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+    public static void deleteData(int s, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
 
         client = new AsyncHttpClient();
         params = new RequestParams();
@@ -178,13 +188,14 @@ public class RequestData {
         client.delete(context, (link_api), entity, "application/json", new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
 //                requestData.getData();
-                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
+                Snackbar.make(recyclerView, "Successfully deleted", Snackbar.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
         });

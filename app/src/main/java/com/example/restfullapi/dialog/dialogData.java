@@ -36,7 +36,6 @@ public class dialogData extends DialogFragment {
     Spinner sp_semester;
     ProgressDialog progressDialog;
     Dialog dialog;
-    RequestData requestData;
 
 
     Context context;
@@ -97,10 +96,10 @@ public class dialogData extends DialogFragment {
                 } else {
                     if (pilih.equalsIgnoreCase("add")) {
                         mahasiswa = new modelMahasiswa( _nama, _jurusan, _semester);
-                        pushData(mahasiswa, dialog,context,progressDialog,recyclerView);
+                        pushData(mahasiswa, dialog,context,progressDialog);
                     }else {
                         mahasiswa = new modelMahasiswa(mahasiswa.getId(), _nama, _jurusan, _semester);
-                        putData(mahasiswa, dialog,context,progressDialog,recyclerView);
+                        putData(mahasiswa, dialog,context,progressDialog);
                     }
                 }
 

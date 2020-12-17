@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +15,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restfullapi.R;
+import com.example.restfullapi.activity.InputActivity;
 import com.example.restfullapi.dialog.dialogData;
 import com.example.restfullapi.model.modelMahasiswa;
 import com.example.restfullapi.services.RequestData;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static com.example.restfullapi.services.RequestData.deleteData;
 
@@ -81,9 +89,18 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    dialogData dialogData = new dialogData(context, "update", mMahasiswa, recyclerView);
-                    FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    dialogData.show(manager, "fm-dialog");
+//                    dialogData dialogData = new dialogData(context, "update", mMahasiswa, recyclerView);
+//                    FragmentManager manager = ((AppCompatActivity) context).getSupportFragmentManager();
+//                    dialogData.show(manager, "fm-dialog");
+
+                    Intent intent = new Intent(context, InputActivity.class);
+                    intent.putExtra("pilih","update");
+                    intent.putExtra("id",mMahasiswa.getId());
+                    intent.putExtra("nama",mMahasiswa.getNama());
+                    intent.putExtra("jurusan",mMahasiswa.getJurusan());
+                    intent.putExtra("semester",mMahasiswa.getSemester());
+
+                    context.startActivity(intent);
                     return true;
                 }
             });
@@ -116,7 +133,7 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
     int id;
     String nama, jurusan, semester;
 
-    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,  ItemTouchHelper.LEFT) {
 
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -138,10 +155,9 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
 //                    requestData.deleteData(modelMahasiswaArrayList.get(position).getId());
                     modelMahasiswaArrayList.remove(position);
                     notifyItemRemoved(position);
-                    notifyDataSetChanged();
-
 
                     new AlertDialog.Builder(viewHolder.itemView.getContext())
+                            .setCancelable(false)
                             .setMessage("Are you sure?")
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
@@ -158,9 +174,8 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
                                     modelMahasiswaArrayList.add(position, mhs);
                                     deleteData(modelMahasiswaArrayList.get(position).getId(),context,progressDialog,recyclerView);
                                     modelMahasiswaArrayList.remove(position);
-                                    notifyItemRemoved(position);
-                                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
-                                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG).show();
+//                                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+
 
                                 }
                             }).create()
@@ -178,7 +193,7 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
 //                                }
 //                            }).show();
                     break;
-                case ItemTouchHelper.RIGHT:
+
 
             }
 
@@ -201,6 +216,15 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
 //                    }).create()
 //                    .show();
 
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(context,c,recyclerView,viewHolder,dX,dY,actionState,isCurrentlyActive)
+                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(context,R.color.purple_500))
+                    .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
+                    .create().decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
 

@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RestFullAPI">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.InputActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:label="Tambah Data"/>
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

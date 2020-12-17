@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".activity.InputActivity">
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/design_default_color_primary"
@@ -32,14 +36,12 @@
         android:hint="Nama"
         android:inputType="textCapSentences" />
 
-    <EditText
-        android:id="@+id/et_jurusan"
+    <Spinner
+        android:id="@+id/sp_jurusan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:hint="Jurusan"
-        android:inputType="textCapSentences" />
+        android:layout_marginEnd="25dp" />
 
     <Spinner
         android:id="@+id/sp_semester"
