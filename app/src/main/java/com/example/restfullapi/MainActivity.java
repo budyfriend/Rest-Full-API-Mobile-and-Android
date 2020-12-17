@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
         fab_add = findViewById(R.id.fab_add);
+
         context = this;
         progressDialog = new ProgressDialog(context);
         requestData = new RequestData(context,progressDialog,recyclerView);
@@ -37,5 +38,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 }

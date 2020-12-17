@@ -69,12 +69,12 @@ public class dialogData extends DialogFragment {
 
         String[] angka_semester = {"1", "2", "3", "4", "5", "6", "7", "8"};
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(angka_semester));
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, arrayList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrayList);
         sp_semester.setAdapter(arrayAdapter);
         requestData = new RequestData(context,progressDialog,recyclerView);
 
         if (pilih.equalsIgnoreCase("update")) {
-            tv_title.setText("Ubah Data ");
+            tv_title.setText("Ubah Data");
             et_nama.setText(mahasiswa.getNama());
             et_jurusan.setText(mahasiswa.getJurusan());
             setSpinner(sp_semester,mahasiswa.getSemester());
@@ -94,7 +94,7 @@ public class dialogData extends DialogFragment {
                     et_jurusan.requestFocus();
                 } else {
                     if (pilih.equalsIgnoreCase("add")) {
-                        mahasiswa = new modelMahasiswa("", _nama, _jurusan, _semester);
+                        mahasiswa = new modelMahasiswa( _nama, _jurusan, _semester);
                         requestData.pushData(mahasiswa, dialog);
                     }else {
                         mahasiswa = new modelMahasiswa(mahasiswa.getId(), _nama, _jurusan, _semester);

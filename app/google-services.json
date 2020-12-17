@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "454923124851",
+    "firebase_url": "https://project-kkm-42874.firebaseio.com",
+    "project_id": "project-kkm-42874",
+    "storage_bucket": "project-kkm-42874.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454923124851:android:11c3b686658a57c01a6a06",
+        "android_client_info": {
+          "package_name": "com.example.restfullapi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454923124851-ahndlu6dtgc2shvsqpr82l4jqle9rfuf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.restfullapi",
+            "certificate_hash": "6a7c0b47bb22d33bd82f750a9268099240af875c"
+          }
+        },
+        {
+          "client_id": "454923124851-4kfvvujomv48aiq8fk6dsmmq6sb19f3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTTXX6GHV3E2oKJzuC3uMDbwIj5gapKzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454923124851-4kfvvujomv48aiq8fk6dsmmq6sb19f3p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
