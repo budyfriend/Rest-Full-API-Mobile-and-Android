@@ -25,6 +25,9 @@ import com.example.restfullapi.services.RequestData;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.example.restfullapi.services.RequestData.pushData;
+import static com.example.restfullapi.services.RequestData.putData;
+
 public class dialogData extends DialogFragment {
     EditText et_nama,
             et_jurusan;
@@ -71,7 +74,6 @@ public class dialogData extends DialogFragment {
         ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(angka_semester));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, arrayList);
         sp_semester.setAdapter(arrayAdapter);
-        requestData = new RequestData(context,progressDialog,recyclerView);
 
         if (pilih.equalsIgnoreCase("update")) {
             tv_title.setText("Ubah Data");
@@ -95,10 +97,10 @@ public class dialogData extends DialogFragment {
                 } else {
                     if (pilih.equalsIgnoreCase("add")) {
                         mahasiswa = new modelMahasiswa( _nama, _jurusan, _semester);
-                        requestData.pushData(mahasiswa, dialog);
+                        pushData(mahasiswa, dialog,context,progressDialog,recyclerView);
                     }else {
                         mahasiswa = new modelMahasiswa(mahasiswa.getId(), _nama, _jurusan, _semester);
-                        requestData.putData(mahasiswa, dialog);
+                        putData(mahasiswa, dialog,context,progressDialog,recyclerView);
                     }
                 }
 

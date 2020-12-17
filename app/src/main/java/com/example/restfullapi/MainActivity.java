@@ -12,8 +12,9 @@ import com.example.restfullapi.dialog.dialogData;
 import com.example.restfullapi.services.RequestData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import static com.example.restfullapi.services.RequestData.getData;
+
 public class MainActivity extends AppCompatActivity {
-    RequestData requestData;
     RecyclerView recyclerView;
     FloatingActionButton fab_add;
     Context context;
@@ -28,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
         progressDialog = new ProgressDialog(context);
-        requestData = new RequestData(context,progressDialog,recyclerView);
-        requestData.getData();
+        getData(context,progressDialog,recyclerView);
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

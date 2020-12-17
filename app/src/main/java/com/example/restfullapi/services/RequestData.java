@@ -48,31 +48,26 @@ import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class RequestData {
     Context context;
-    ProgressDialog progressDialog;
-    RecyclerView recyclerView;
-    String link_api;
-    AsyncHttpClient client = new AsyncHttpClient();
-    RequestParams params = new RequestParams();
-    RequestData requestData;
-    adapterMahasiswa adapterMahasiswa;
-    ArrayList<modelMahasiswa> modelMahasiswa = new ArrayList<>();
-    ItemTouchHelper itemTouchHelper;
+   public static  ProgressDialog progressDialog;
+    public static RecyclerView recyclerView;
+    public static String link_api;
+    public static AsyncHttpClient client = new AsyncHttpClient();
+    public static RequestParams params = new RequestParams();
+    public static RequestData requestData;
+    public static adapterMahasiswa adapterMahasiswa;
+    public static ArrayList<modelMahasiswa> modelMahasiswa = new ArrayList<>();
+    public static ItemTouchHelper itemTouchHelper;
 
-    public RequestData(Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
-        this.context = context;
-        this.progressDialog = progressDialog;
-        this.recyclerView = recyclerView;
-    }
 
-    public void setLoading() {
+    private static void setLoading(ProgressDialog progressDialog) {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
     }
 
 
-    public void getData() {
-        setLoading();
+    public static void getData(Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+        setLoading(progressDialog);
         client = new AsyncHttpClient();
         link_api = context.getString(R.string.link_api);
         client.get(link_api, new TextHttpResponseHandler() {
@@ -98,7 +93,7 @@ public class RequestData {
                     adapterMahasiswa = new adapterMahasiswa(modelMahasiswa, context, recyclerView, progressDialog);
 
                     recyclerView.setAdapter(adapterMahasiswa);
-                    itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                    itemTouchHelper = new ItemTouchHelper(adapterMahasiswa.simpleCallback);
                     itemTouchHelper.attachToRecyclerView(recyclerView);
                     progressDialog.dismiss();
                 } catch (JSONException e) {
@@ -108,12 +103,12 @@ public class RequestData {
         });
     }
 
-    public void pushData(modelMahasiswa mahasiswa, Dialog dialog) {
-        requestData = new RequestData(context, progressDialog, recyclerView);
+    public static void pushData(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+
         client = new AsyncHttpClient();
         params = new RequestParams();
         link_api = context.getString(R.string.link_api);
-        setLoading();
+        setLoading(progressDialog);
 
         params.put("id", mahasiswa.getId());
         params.put("nama", mahasiswa.getNama());
@@ -130,7 +125,7 @@ public class RequestData {
                 Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 if (dialog != null) {
-                    requestData.getData();
+                    getData(context,progressDialog,recyclerView);
                     dialog.dismiss();
                 }
 
@@ -138,12 +133,12 @@ public class RequestData {
         });
     }
 
-    public void putData(modelMahasiswa mahasiswa, Dialog dialog) {
-        requestData = new RequestData(context, progressDialog, recyclerView);
+    public static void putData(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+
         client = new AsyncHttpClient();
         params = new RequestParams();
         link_api = context.getString(R.string.link_api);
-        setLoading();
+        setLoading(progressDialog);
 
         params.put("id", mahasiswa.getId());
         params.put("nama", mahasiswa.getNama());
@@ -157,7 +152,7 @@ public class RequestData {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                requestData.getData();
+                getData(context,progressDialog,recyclerView);
                 Toast.makeText(context, "response : " + responseString + " status code : " + statusCode, Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 dialog.dismiss();
@@ -165,12 +160,12 @@ public class RequestData {
         });
     }
 
-    public void deleteData(int s) {
-        requestData = new RequestData(context, progressDialog, recyclerView);
+    public static void deleteData(int s,Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+
         client = new AsyncHttpClient();
         params = new RequestParams();
         link_api = context.getString(R.string.link_api);
-        setLoading();
+        setLoading(progressDialog);
         params.put("id", s);
         StringEntity entity = null;
         try {
@@ -197,96 +192,5 @@ public class RequestData {
 
     }
 
-
-    modelMahasiswa mhs = null;
-    int id;
-    String nama, jurusan, semester;
-
-    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            int position = viewHolder.getAdapterPosition();
-            requestData = new RequestData(context, progressDialog, recyclerView);
-            switch (direction) {
-                case ItemTouchHelper.LEFT:
-
-                    id = modelMahasiswa.get(position).getId();
-                    nama = modelMahasiswa.get(position).getNama();
-                    jurusan = modelMahasiswa.get(position).getJurusan();
-                    semester = modelMahasiswa.get(position).getSemester();
-
-                    mhs = new modelMahasiswa(id, nama, jurusan, semester);
-//                    requestData.deleteData(modelMahasiswa.get(position).getId());
-                    modelMahasiswa.remove(position);
-                    adapterMahasiswa.notifyItemRemoved(position);
-                    adapterMahasiswa.notifyDataSetChanged();
-
-                    new AlertDialog.Builder(viewHolder.itemView.getContext())
-                            .setMessage("Are you sure?")
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    modelMahasiswa.add(position, mhs);
-//                                    requestData.pushData(mhs, null);
-                                    adapterMahasiswa.notifyItemInserted(position);
-//                                    notifyDataSetChanged();
-                                }
-                            })
-                            .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    modelMahasiswa.add(position, mhs);
-                                    requestData.deleteData(modelMahasiswa.get(position).getId());
-                                    modelMahasiswa.remove(position);
-                                    adapterMahasiswa.notifyItemRemoved(position);
-                                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG).show();
-
-                                }
-                            }).create()
-                            .show();
-
-//                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG)
-//                            .setAction("Undo", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//
-//                                    modelMahasiswa.add(position, mhs);
-////                                    requestData.pushData(mhs, null);
-//                                    notifyItemInserted(position);
-////                                    notifyDataSetChanged();
-//                                }
-//                            }).show();
-                    break;
-                case ItemTouchHelper.RIGHT:
-
-            }
-
-//            new AlertDialog.Builder(viewHolder.itemView.getContext())
-//                    .setMessage("Are you sure?")
-//                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            notifyDataSetChanged();
-//                        }
-//                    })
-//                    .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            requestData = new RequestData(context, progressDialog, recyclerView);
-//                            requestData.deleteData(modelMahasiswa.get(position).getId());
-//
-//                        }
-//                    }).create()
-//                    .show();
-
-        }
-    };
 
 }

@@ -24,6 +24,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
+import static com.example.restfullapi.services.RequestData.deleteData;
+
 public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.MahasiswaViewHolder> {
     ArrayList<modelMahasiswa> modelMahasiswaArrayList;
     Context context;
@@ -110,96 +112,97 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
         }
     }
 
-//    modelMahasiswa mhs = null;
-//    int id;
-//    String nama, jurusan, semester;
-//
-//    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-//
-//        @Override
-//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//            return false;
-//        }
-//
-//        @Override
-//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//            int position = viewHolder.getAdapterPosition();
-//            switch (direction) {
-//                case ItemTouchHelper.LEFT:
-//
-//                    id = modelMahasiswaArrayList.get(position).getId();
-//                    nama = modelMahasiswaArrayList.get(position).getNama();
-//                    jurusan = modelMahasiswaArrayList.get(position).getJurusan();
-//                    semester = modelMahasiswaArrayList.get(position).getSemester();
-//
-//                    mhs = new modelMahasiswa(id, nama, jurusan, semester);
-////                    requestData.deleteData(modelMahasiswaArrayList.get(position).getId());
-//                    modelMahasiswaArrayList.remove(position);
-//                    notifyItemRemoved(position);
-//
-//
-//                    new AlertDialog.Builder(viewHolder.itemView.getContext())
-//                            .setMessage("Are you sure?")
-//                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+    modelMahasiswa mhs = null;
+    int id;
+    String nama, jurusan, semester;
+
+    public ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+            switch (direction) {
+                case ItemTouchHelper.LEFT:
+
+                    id = modelMahasiswaArrayList.get(position).getId();
+                    nama = modelMahasiswaArrayList.get(position).getNama();
+                    jurusan = modelMahasiswaArrayList.get(position).getJurusan();
+                    semester = modelMahasiswaArrayList.get(position).getSemester();
+
+                    mhs = new modelMahasiswa(id, nama, jurusan, semester);
+//                    requestData.deleteData(modelMahasiswaArrayList.get(position).getId());
+                    modelMahasiswaArrayList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
+
+
+                    new AlertDialog.Builder(viewHolder.itemView.getContext())
+                            .setMessage("Are you sure?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    modelMahasiswaArrayList.add(position, mhs);
+//                                    requestData.pushData(mhs, null);
+                                    notifyItemInserted(position);
+//                                    notifyDataSetChanged();
+                                }
+                            })
+                            .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    modelMahasiswaArrayList.add(position, mhs);
+                                    deleteData(modelMahasiswaArrayList.get(position).getId(),context,progressDialog,recyclerView);
+                                    modelMahasiswaArrayList.remove(position);
+                                    notifyItemRemoved(position);
+                                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
+                                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG).show();
+
+                                }
+                            }).create()
+                            .show();
+
+//                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG)
+//                            .setAction("Undo", new View.OnClickListener() {
 //                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
+//                                public void onClick(View v) {
+//
 //                                    modelMahasiswaArrayList.add(position, mhs);
 ////                                    requestData.pushData(mhs, null);
 //                                    notifyItemInserted(position);
 ////                                    notifyDataSetChanged();
 //                                }
-//                            })
-//                            .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    modelMahasiswaArrayList.add(position, mhs);
-//                                    requestData.deleteData(modelMahasiswaArrayList.get(position).getId());
-//                                    modelMahasiswaArrayList.remove(position);
-//                                    notifyItemRemoved(position);
-//                                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
-//                                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG).show();
+//                            }).show();
+                    break;
+                case ItemTouchHelper.RIGHT:
+
+            }
+
+//            new AlertDialog.Builder(viewHolder.itemView.getContext())
+//                    .setMessage("Are you sure?")
+//                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            notifyDataSetChanged();
+//                        }
+//                    })
+//                    .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
 //
-//                                }
-//                            }).create()
-//                            .show();
+//                            requestData = new RequestData(context, progressDialog, recyclerView);
+//                            requestData.deleteData(modelMahasiswaArrayList.get(position).getId());
 //
-////                    Snackbar.make(recyclerView, "Successful delete", Snackbar.LENGTH_LONG)
-////                            .setAction("Undo", new View.OnClickListener() {
-////                                @Override
-////                                public void onClick(View v) {
-////
-////                                    modelMahasiswaArrayList.add(position, mhs);
-//////                                    requestData.pushData(mhs, null);
-////                                    notifyItemInserted(position);
-//////                                    notifyDataSetChanged();
-////                                }
-////                            }).show();
-//                    break;
-//                case ItemTouchHelper.RIGHT:
-//
-//            }
-//
-////            new AlertDialog.Builder(viewHolder.itemView.getContext())
-////                    .setMessage("Are you sure?")
-////                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-////                        @Override
-////                        public void onClick(DialogInterface dialog, int which) {
-////                            notifyDataSetChanged();
-////                        }
-////                    })
-////                    .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-////                        @Override
-////                        public void onClick(DialogInterface dialog, int which) {
-////
-////                            requestData = new RequestData(context, progressDialog, recyclerView);
-////                            requestData.deleteData(modelMahasiswaArrayList.get(position).getId());
-////
-////                        }
-////                    }).create()
-////                    .show();
-//
-//        }
-//    };
+//                        }
+//                    }).create()
+//                    .show();
+
+        }
+    };
 
 
 }
