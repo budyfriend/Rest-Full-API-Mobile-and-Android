@@ -1,12 +1,9 @@
 package com.example.restfullapi.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static com.example.restfullapi.services.RequestData.pushData;
-import static com.example.restfullapi.services.RequestData.putData;
+
+import static com.example.restfullapi.services.RequestDataAsyncHttp.pushDataAsyncHttp;
+
+import static com.example.restfullapi.services.RequestDataAsyncHttp.putDataAsyncHttp;
 
 public class InputActivity extends AppCompatActivity {
     EditText et_nama;
@@ -100,11 +99,11 @@ public class InputActivity extends AppCompatActivity {
                 }else {
                     if (pilih.equalsIgnoreCase("add")) {
                         mahasiswa = new modelMahasiswa(_nama, _jurusan, _semester);
-                        pushData(mahasiswa, null, context, progressDialog);
+                        pushDataAsyncHttp(mahasiswa, null, context, progressDialog);
 
                     } else {
                         mahasiswa = new modelMahasiswa(id, _nama, _jurusan, _semester);
-                        putData(mahasiswa, null, context, progressDialog);
+                        putDataAsyncHttp(mahasiswa, null, context, progressDialog);
                     }
                 }
 

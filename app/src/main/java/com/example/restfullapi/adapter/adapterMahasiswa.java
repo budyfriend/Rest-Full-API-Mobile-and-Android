@@ -7,39 +7,33 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restfullapi.R;
 import com.example.restfullapi.activity.InputActivity;
-import com.example.restfullapi.dialog.dialogData;
 import com.example.restfullapi.model.modelMahasiswa;
-import com.example.restfullapi.services.RequestData;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.restfullapi.services.RequestDataAsyncHttp;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-import static com.example.restfullapi.services.RequestData.deleteData;
+import static com.example.restfullapi.services.RequestDataAsyncHttp.deleteDataAsyncHttp;
 
 public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.MahasiswaViewHolder> {
     ArrayList<modelMahasiswa> modelMahasiswaArrayList;
     Context context;
     RecyclerView recyclerView;
     ProgressDialog progressDialog;
-    RequestData requestData;
+    RequestDataAsyncHttp requestDataAsyncHttp;
 
     public adapterMahasiswa(ArrayList<modelMahasiswa> modelMahasiswaArrayList, Context context, RecyclerView recyclerView, ProgressDialog progressDialog) {
         this.modelMahasiswaArrayList = modelMahasiswaArrayList;
@@ -172,7 +166,7 @@ public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.Maha
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     modelMahasiswaArrayList.add(position, mhs);
-                                    deleteData(modelMahasiswaArrayList.get(position).getId(),context,progressDialog,recyclerView);
+                                    deleteDataAsyncHttp(modelMahasiswaArrayList.get(position).getId(),context,progressDialog,recyclerView);
                                     modelMahasiswaArrayList.remove(position);
 //                                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
 

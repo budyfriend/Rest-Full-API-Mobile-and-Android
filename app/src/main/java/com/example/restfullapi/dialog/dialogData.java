@@ -20,13 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restfullapi.R;
 import com.example.restfullapi.model.modelMahasiswa;
-import com.example.restfullapi.services.RequestData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.example.restfullapi.services.RequestData.pushData;
-import static com.example.restfullapi.services.RequestData.putData;
+import static com.example.restfullapi.services.RequestDataAsyncHttp.pushDataAsyncHttp;
+import static com.example.restfullapi.services.RequestDataAsyncHttp.putDataAsyncHttp;
 
 public class dialogData extends DialogFragment {
     EditText et_nama,
@@ -96,10 +95,10 @@ public class dialogData extends DialogFragment {
                 } else {
                     if (pilih.equalsIgnoreCase("add")) {
                         mahasiswa = new modelMahasiswa( _nama, _jurusan, _semester);
-                        pushData(mahasiswa, dialog,context,progressDialog);
+                        pushDataAsyncHttp(mahasiswa, dialog,context,progressDialog);
                     }else {
                         mahasiswa = new modelMahasiswa(mahasiswa.getId(), _nama, _jurusan, _semester);
-                        putData(mahasiswa, dialog,context,progressDialog);
+                        putDataAsyncHttp(mahasiswa, dialog,context,progressDialog);
                     }
                 }
 

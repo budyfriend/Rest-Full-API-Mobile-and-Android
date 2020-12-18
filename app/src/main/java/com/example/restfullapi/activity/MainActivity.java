@@ -10,11 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.restfullapi.R;
-import com.example.restfullapi.dialog.dialogData;
-import com.example.restfullapi.services.RequestData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.example.restfullapi.services.RequestData.getData;
+import static com.example.restfullapi.services.RequestDataAsyncHttp.getDataAsyncHttp;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
         progressDialog = new ProgressDialog(context);
-        getData(context,progressDialog,recyclerView);
+        getDataAsyncHttp(context,progressDialog,recyclerView);
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
