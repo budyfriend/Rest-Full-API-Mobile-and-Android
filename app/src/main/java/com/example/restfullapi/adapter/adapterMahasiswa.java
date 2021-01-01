@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static com.example.restfullapi.services.RequestDataAsyncHttp.deleteDataAsyncHttp;
+import static com.example.restfullapi.services.RequestDataVolley.deleteDataVolley;
 
 public class adapterMahasiswa extends RecyclerView.Adapter<adapterMahasiswa.MahasiswaViewHolder> {
     ArrayList<modelMahasiswa> modelMahasiswaArrayList;

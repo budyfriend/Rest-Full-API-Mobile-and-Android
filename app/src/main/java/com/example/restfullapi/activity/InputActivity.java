@@ -23,6 +23,8 @@ import java.util.Objects;
 import static com.example.restfullapi.services.RequestDataAsyncHttp.pushDataAsyncHttp;
 
 import static com.example.restfullapi.services.RequestDataAsyncHttp.putDataAsyncHttp;
+import static com.example.restfullapi.services.RequestDataVolley.pushDataVolley;
+import static com.example.restfullapi.services.RequestDataVolley.putDataVolley;
 
 public class InputActivity extends AppCompatActivity {
     EditText et_nama;

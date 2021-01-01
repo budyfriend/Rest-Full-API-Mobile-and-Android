@@ -83,7 +83,7 @@ public class RequestDataVolley {
         requestQueue.add(stringRequest);
     }
 
-    private static void pushDataVolley(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog) {
+    public static void pushDataVolley(modelMahasiswa mahasiswa, Dialog dialog, Context context, ProgressDialog progressDialog) {
         link_api = context.getString(R.string.link_api);
         setLoading(progressDialog);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, link_api, new Response.Listener<String>() {
@@ -151,7 +151,7 @@ public class RequestDataVolley {
         requestQueue.add(stringRequest);
     }
 
-    public static void deleteDataVolley(int s, Context context, ProgressDialog progressDialog, RecyclerView recyclerView){
+    public static void deleteDataVolley(int s, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
         link_api = context.getString(R.string.link_api);
         setLoading(progressDialog);
         StringRequest stringRequest = new StringRequest(Request.Method.DELETE, link_api, new Response.Listener<String>() {
@@ -165,7 +165,17 @@ public class RequestDataVolley {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
+            @Override
+            public String getBodyContentType() {
+                return super.getBodyContentType();
+            }
+
+            @Override
+            protected String getParamsEncoding() {
+                return super.getParamsEncoding();
+            }
+
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> params = new HashMap<>();
@@ -173,10 +183,6 @@ public class RequestDataVolley {
                 return params;
             }
 
-            @Override
-            public String getBodyContentType() {
-                return super.getBodyContentType();
-            }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);

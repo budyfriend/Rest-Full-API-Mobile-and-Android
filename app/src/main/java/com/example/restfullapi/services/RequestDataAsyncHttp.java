@@ -150,7 +150,7 @@ public class RequestDataAsyncHttp {
         });
     }
 
-    public static void deleteData(int s, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
+    public static void deleteDataAsyncHttp(int s, Context context, ProgressDialog progressDialog, RecyclerView recyclerView) {
 
         client = new AsyncHttpClient();
         params = new RequestParams();

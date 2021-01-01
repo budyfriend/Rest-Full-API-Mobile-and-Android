@@ -26,6 +26,8 @@ import java.util.Arrays;
 
 import static com.example.restfullapi.services.RequestDataAsyncHttp.pushDataAsyncHttp;
 import static com.example.restfullapi.services.RequestDataAsyncHttp.putDataAsyncHttp;
+import static com.example.restfullapi.services.RequestDataVolley.pushDataVolley;
+import static com.example.restfullapi.services.RequestDataVolley.putDataVolley;
 
 public class dialogData extends DialogFragment {
     EditText et_nama,
